@@ -30,5 +30,10 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
         /// Gets or sets a value indicating whether deletion of non-empty directories is allowed.
         /// </summary>
         public bool AllowNonEmptyDirectoryDelete { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to delete file on failed upload attempt.
+        /// </summary>
+        public bool DeleteFileOnUploadTimeout { get; set; }
     }
 }

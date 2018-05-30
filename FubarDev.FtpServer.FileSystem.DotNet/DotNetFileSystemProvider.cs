@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="DotNetFileSystemProvider.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -42,8 +42,6 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
             _allowNonEmptyDirectoryDelete = options.Value.AllowNonEmptyDirectoryDelete;
             _deleteFileOnUploadTimeout = options.Value.DeleteFileOnUploadTimeout;
         }
-
-        
 
         /// <inheritdoc/>
         public Task<IUnixFileSystem> Create(string userId, bool isAnonymous)

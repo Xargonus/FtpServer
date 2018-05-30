@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="DotNetFileSystem.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -47,7 +47,7 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
         /// <param name="allowNonEmptyDirectoryDelete">Defines whether the deletion of non-empty directories is allowed.</param>
         /// <param name="streamBufferSize">Buffer size to be used in async IO methods.</param>
         /// <param name="deleteFileOnUploadTimeout">Delete files when a timeout occurs during upload.</param>
-        public DotNetFileSystem(string rootPath, bool allowNonEmptyDirectoryDelete, bool deleteFileOnUploadTimeout , int streamBufferSize)
+        public DotNetFileSystem(string rootPath, bool allowNonEmptyDirectoryDelete, bool deleteFileOnUploadTimeout, int streamBufferSize)
         {
             FileSystemEntryComparer = StringComparer.OrdinalIgnoreCase;
             Root = new DotNetDirectoryEntry(this, Directory.CreateDirectory(rootPath), true);

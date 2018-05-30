@@ -61,6 +61,9 @@ namespace FubarDev.FtpServer.FileSystem.GoogleDrive
         public bool SupportsNonEmptyDirectoryDelete => true;
 
         /// <inheritdoc/>
+        public bool DeletesFilesOnUploadTimeout { get; }
+
+        /// <inheritdoc/>
         public StringComparer FileSystemEntryComparer => StringComparer.OrdinalIgnoreCase;
 
         /// <inheritdoc/>

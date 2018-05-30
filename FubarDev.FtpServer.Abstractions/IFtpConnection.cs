@@ -32,6 +32,11 @@ namespace FubarDev.FtpServer
         event EventHandler Closed;
 
         /// <summary>
+        /// Gets or sets the event handler that is triggered when a new file is uploaded.
+        /// </summary>
+        event EventHandler NewFileUploaded;
+
+        /// <summary>
         /// Gets the dictionary of all known command handlers.
         /// </summary>
         [NotNull]

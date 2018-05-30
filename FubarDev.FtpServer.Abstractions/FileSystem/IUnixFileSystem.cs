@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="IUnixFileSystem.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -38,7 +38,7 @@ namespace FubarDev.FtpServer.FileSystem
         bool DeletesFilesOnUploadTimeout { get; }
 
         /// <summary>
-        /// Gets a string comparer for file system entry names
+        /// Gets a string comparer for file system entry names.
         /// </summary>
         /// <remarks>
         /// Required to support case insensitive file systems.
