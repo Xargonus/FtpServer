@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="FtpServer.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -100,6 +100,11 @@ namespace FubarDev.FtpServer
 
         /// <summary>
         /// Gets or sets a value indicating whether server ready to receive incoming connectoions.
+        /// </summary>
+        public EventHandler NewFileUpload { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default text encoding for textual data
         /// </summary>
         public bool Ready
         {

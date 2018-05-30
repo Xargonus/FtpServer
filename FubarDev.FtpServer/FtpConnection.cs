@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="FtpConnection.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -111,8 +111,22 @@ namespace FubarDev.FtpServer
         /// <inheritdoc />
         public event EventHandler Closed;
 
+
         /// <inheritdoc />
         public IReadOnlyDictionary<string, IFtpCommandHandler> CommandHandlers => _commandHandlersDict.Value;
+
+        /// <summary>
+        /// Gets or sets the event handler that is triggered when a new file is uploaded.
+        /// </summary>
+        public event EventHandler NewFileUploaded;
+
+        /// <summary>
+        /// Gets the dictionary of all known command handlers
+        /// </summary>
+        [NotNull]
+        [ItemNotNull]
+        public IReadOnlyDictionary<string, FtpCommandHandler> CommandHandlers { get; }
+
 
         /// <inheritdoc />
         public Encoding Encoding { get; set; }
@@ -161,7 +175,16 @@ namespace FubarDev.FtpServer
         }
 
         /// <summary>
-        /// Writes a FTP response to a client.
+        /// Invokes the method that is to be called after a file has been successfuly uploaded
+        /// </summary>
+        /// <param name="fileName">The filename for the file upload event</param>
+        public void FileUploadedSuccessfuly(string fileName)
+        {
+            NewFileUploaded?.Invoke(null, new FileUploadEventArgs(this, fileName));
+        }
+
+        /// <summary>
+        /// Writes a FTP response to a client
         /// </summary>
         /// <param name="response">The response to write to the client.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

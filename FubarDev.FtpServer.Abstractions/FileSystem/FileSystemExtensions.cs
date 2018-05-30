@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="FileSystemExtensions.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -111,7 +111,12 @@ namespace FubarDev.FtpServer.FileSystem
                 currentDir = foundDirEntry;
             }
 
-            return currentDir;
+            // CurrentDir still may not exist (eg. no pathElements were passed to the function and check above was not called)
+            var foundCurrDir = await fileSystem.GetEntryByNameAsync(currentDir, string.Empty, cancellationToken);
+            if (foundCurrDir is IUnixDirectoryEntry)
+                return currentDir;
+            else
+                return null;
         }
 
         /// <summary>

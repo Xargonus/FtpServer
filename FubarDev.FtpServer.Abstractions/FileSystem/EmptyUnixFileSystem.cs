@@ -39,6 +39,9 @@ namespace FubarDev.FtpServer.FileSystem
         public bool SupportsNonEmptyDirectoryDelete => false;
 
         /// <inheritdoc/>
+        public bool DeletesFilesOnUploadTimeout => false;
+
+        /// <inheritdoc/>
         public Task<IBackgroundTransfer> AppendAsync(IUnixFileEntry fileEntry, long? startPosition, Stream data, CancellationToken cancellationToken)
         {
             throw new NotSupportedException();

@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="DotNetFileSystemProvider.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -26,6 +26,8 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
 
         private readonly int _streamBufferSize;
 
+        private readonly bool _deleteFileOnUploadTimeout;
+
         private readonly bool _allowNonEmptyDirectoryDelete;
 
         /// <summary>
@@ -38,7 +40,10 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
             _useUserIdAsSubFolder = options.Value.UseUserIdAsSubFolder;
             _streamBufferSize = options.Value.StreamBufferSize ?? DotNetFileSystem.DefaultStreamBufferSize;
             _allowNonEmptyDirectoryDelete = options.Value.AllowNonEmptyDirectoryDelete;
+            _deleteFileOnUploadTimeout = options.Value.DeleteFileOnUploadTimeout;
         }
+
+        
 
         /// <inheritdoc/>
         public Task<IUnixFileSystem> Create(string userId, bool isAnonymous)
@@ -54,7 +59,7 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
                 path = Path.Combine(path, userId);
             }
 
-            return Task.FromResult<IUnixFileSystem>(new DotNetFileSystem(path, _allowNonEmptyDirectoryDelete, _streamBufferSize));
+            return Task.FromResult<IUnixFileSystem>(new DotNetFileSystem(path, _allowNonEmptyDirectoryDelete, _deleteFileOnUploadTimeout, _streamBufferSize));
         }
     }
 }

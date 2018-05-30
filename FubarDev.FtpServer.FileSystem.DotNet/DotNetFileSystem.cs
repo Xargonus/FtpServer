@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="DotNetFileSystem.cs" company="Fubar Development Junker">
 //     Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
@@ -36,7 +36,7 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
         /// <param name="rootPath">The path to use as root.</param>
         /// <param name="allowNonEmptyDirectoryDelete">Defines whether the deletion of non-empty directories is allowed.</param>
         public DotNetFileSystem(string rootPath, bool allowNonEmptyDirectoryDelete)
-            : this(rootPath, allowNonEmptyDirectoryDelete, DefaultStreamBufferSize)
+            : this(rootPath, allowNonEmptyDirectoryDelete, false, DefaultStreamBufferSize)
         {
         }
 
@@ -46,16 +46,21 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
         /// <param name="rootPath">The path to use as root.</param>
         /// <param name="allowNonEmptyDirectoryDelete">Defines whether the deletion of non-empty directories is allowed.</param>
         /// <param name="streamBufferSize">Buffer size to be used in async IO methods.</param>
-        public DotNetFileSystem(string rootPath, bool allowNonEmptyDirectoryDelete, int streamBufferSize)
+        /// <param name="deleteFileOnUploadTimeout">Delete files when a timeout occurs during upload.</param>
+        public DotNetFileSystem(string rootPath, bool allowNonEmptyDirectoryDelete, bool deleteFileOnUploadTimeout , int streamBufferSize)
         {
             FileSystemEntryComparer = StringComparer.OrdinalIgnoreCase;
             Root = new DotNetDirectoryEntry(this, Directory.CreateDirectory(rootPath), true);
             SupportsNonEmptyDirectoryDelete = allowNonEmptyDirectoryDelete;
+            DeletesFilesOnUploadTimeout = deleteFileOnUploadTimeout;
             _streamBufferSize = streamBufferSize;
         }
 
         /// <inheritdoc/>
         public bool SupportsNonEmptyDirectoryDelete { get; }
+
+        /// <inheritdoc/>
+        public bool DeletesFilesOnUploadTimeout { get; }
 
         /// <inheritdoc/>
         public StringComparer FileSystemEntryComparer { get; }
@@ -185,9 +190,18 @@ namespace FubarDev.FtpServer.FileSystem.DotNet
         {
             var targetEntry = (DotNetDirectoryEntry)targetDirectory;
             var fileInfo = new FileInfo(Path.Combine(targetEntry.Info.FullName, fileName));
-            using (var output = fileInfo.Create())
+            try
             {
-                await data.CopyToAsync(output, _streamBufferSize, cancellationToken).ConfigureAwait(false);
+                using (var output = fileInfo.Create())
+                {
+                    await data.CopyToAsync(output, _streamBufferSize, cancellationToken).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                if (DeletesFilesOnUploadTimeout)
+                    fileInfo.Delete();
+                throw;
             }
             return null;
         }
